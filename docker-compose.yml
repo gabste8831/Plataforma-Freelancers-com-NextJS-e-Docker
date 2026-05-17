@@ -1,0 +1,41 @@
+services:
+  app:
+    build: .
+    image: gabrielste/freelacloud-app:latest
+    container_name: freela-app
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:suasenha@db:5432/freeladb
+    depends_on:
+      db:
+        condition: service_healthy
+    command: sh -c "npx prisma db push && npm start"
+    networks:
+      - cloud-network
+
+  db:
+    image: postgres:16-alpine
+    container_name: freela-db
+    ports:
+      - "5436:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=suasenha
+      - POSTGRES_DB=freeladb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - cloud-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d freeladb" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+networks:
+  cloud-network:
+    driver: bridge
+
+volumes:
+  pgdata:

@@ -1,0 +1,28 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Project {
+  id                   String   @id @default(uuid())
+  title                String
+  category             String
+  budget               Float
+  description          String   @db.Text
+  hiredProfessionalId  String?
+  isClosed             Boolean  @default(false)
+  createdAt            DateTime @default(now())
+}
+
+model Professional {
+  id          String   @id @default(uuid())
+  name        String
+  role        String
+  skills      String
+  hourlyRate  Float
+  about       String   @db.Text
+  createdAt   DateTime @default(now())
+}

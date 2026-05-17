@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# FreelaCloud - Plataforma Freelance para Profissionais
 
-## Getting Started
+## Descrição da Aplicação
+O **FreelaCloud** é uma plataforma moderna simulando um ambiente de Cloud Computing real, desenvolvida para conectar Profissionais Autônomos (Freelancers) a Clientes que precisam de serviços. O sistema permite o cadastro, listagem e exclusão (CRUD completo) de Vagas de Projetos e de Perfis Profissionais, além do vínculo dinâmico entre ambos.
 
-First, run the development server:
+## Tecnologias Utilizadas
+- **Frontend & Backend:** Node.js com Next.js (App Router)
+- **Estilização:** Tailwind CSS (Elite Dark Mode)
+- **Banco de Dados:** PostgreSQL 16 (Relacional)
+- **ORM:** Prisma (Type-safe access)
+- **Infraestrutura/DevOps:** Docker e Docker Compose
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Arquitetura Utilizada
+A solução utiliza **arquitetura de microserviços conteinerizada**, executando em containers isolados orquestrados pelo Docker Compose:
+1. **Container Web (`app`):** Roda a aplicação Next.js, executando o servidor na porta interna `3000`.
+2. **Container Banco (`db`):** Roda o PostgreSQL na porta padrão `5432`.
+3. **Persistência de Dados:** Utiliza um Volume Docker (`pgdata`) mapeado para `/var/lib/postgresql/data`, garantindo que os dados persistam mesmo após a remoção dos containers.
+4. **Rede Dedicada:** Os containers operam em uma rede `bridge` customizada chamada `cloud-network`.
+
+## Estrutura do Projeto
+```text
+projeto/
+  app/                # Código fonte (Next.js)
+  prisma/             # Schema e modelos do banco
+  Dockerfile          # Definição da imagem da aplicação
+  docker-compose.yml  # Orquestração total do ambiente
+  README.md           # Documentação técnica (este arquivo)
+  evidencias/         # Prints solicitados pelo professor
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Variáveis de Ambiente
+- `DATABASE_URL`: URL de conexão no formato `postgresql://user:pass@host:port/dbname`.
+*(No Docker Compose, o host é definido como `db`, o nome do serviço).*
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Portas Utilizadas
+- Portas Web: `3000` (Acesso do usuário)
+- Portas Internas: `5432` (Comunicação Banco <-> App)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Instruções Completas de Execução
 
-## Learn More
+### Pré-requisitos
+- **Docker Desktop** (ou Docker Engine + Docker Compose V2).
+- Garantir que a porta `3000` e `5436` (ou `5432`) estejam livres.
 
-To learn more about Next.js, take a look at the following resources:
+### Comandos Necessários
+Para iniciar o ambiente completo:
+```bash
+docker compose up -d --build
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Para visualizar os logs:
+```bash
+docker compose logs -f app
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Para encerrar o ambiente:
+```bash
+docker compose down
+```
 
-## Deploy on Vercel
+## Publicação no DockerHub
+Para publicar a sua imagem personalizada no DockerHub:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Realize o login no terminal:
+```bash
+docker login
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+2. Construa e tagueie a imagem (substitua `seu-usuario` para o seu username do DockerHub):
+```bash
+docker build -t seu-usuario/freelacloud-app:latest .
+```
+
+3. Envie para o repositório público:
+```bash
+docker push seu-usuario/freelacloud-app:latest
+```
+
+## Pasta de Evidências
+A pasta `/evidencias` contém os registros visuais obrigatórios com terminal visível, comprovando a execução real em ambiente conteinerizado e a persistência dos dados.
+- **Desenvolvimento:** Aplicação funcionando localmente.
+- **Docker:** Build da imagem e listagem técnica.
+- **Compose:** Orquestração e status dos serviços.
+- **Banco:** Conexão ativa, cadastro e listagem.
+- **Persistência:** Dados seguros após reinicialização.
+- **DockerHub:** Página da imagem publicada.
