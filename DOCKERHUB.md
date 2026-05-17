@@ -12,7 +12,8 @@ Uma aplicação moderna desenvolvida para conectar grandes talentos de tecnologi
 
 Para executar o ambiente completo (Aplicação + Banco de Dados + Rede + Volumes), recomendamos o uso do repositório completo e do Docker Compose:
 
-1. Clone o repositório do GitHub (link no perfil).
+1. Clone o repositório do GitHub:
+   `https://github.com/gabste8831/Plataforma-Freelancers-com-NextJS-e-Docker`
 2. Na raiz do projeto, execute:
    ```bash
    docker compose up -d
@@ -24,4 +25,4 @@ A aplicação estará disponível em `http://localhost:3000`.
 A imagem deste repositório contém a camada de interface e API da plataforma. Ela foi desenhada para comunicar-se nativamente com um container PostgreSQL através de variáveis de ambiente, garantindo isolamento e escalabilidade.
 
 ---
-*Projeto desenvolvido para a disciplina de Cloud Computing - UNIDAVI.*
+*Projeto desenvolvido para a disciplina de Cloud Computing do Curso de Sistemas de Informação - UNIDAVI.*
