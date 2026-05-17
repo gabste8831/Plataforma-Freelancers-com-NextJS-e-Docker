@@ -38,6 +38,9 @@ projeto/
 
 ## Instruções Completas de Execução
 
+### Link Docker Hub
+[https://hub.docker.com/r/gabrielste/freelacloud-app]
+
 ### Pré-requisitos
 - **Docker Desktop** (ou Docker Engine + Docker Compose V2).
 - Garantir que a porta `3000` e `5436` (ou `5432`) estejam livres.
